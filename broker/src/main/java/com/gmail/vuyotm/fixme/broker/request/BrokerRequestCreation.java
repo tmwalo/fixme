@@ -1,8 +1,10 @@
 package com.gmail.vuyotm.fixme.broker.request;
 
 import com.gmail.vuyotm.fixme.broker.BrokerData;
+import com.gmail.vuyotm.fixme.broker.fixmsg.FixMsg;
+import com.gmail.vuyotm.fixme.broker.fixmsg.FixMsgFactory;
+import com.gmail.vuyotm.fixme.broker.fixmsg.FixMsgOrder;
 import com.gmail.vuyotm.fixme.broker.validation.BrokerInputValidation;
-
 import java.io.IOException;
 
 public class BrokerRequestCreation {
@@ -45,7 +47,7 @@ public class BrokerRequestCreation {
             String          quantityStr;
             int             quantity;
             String          orderType;
-            FixMsgOrder     fixMsgOrder;
+            FixMsgOrder fixMsgOrder;
 
             tokens = brokerInput.split(" ");
             brokerId = BrokerData.getBrokerId();
