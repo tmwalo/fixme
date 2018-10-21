@@ -62,17 +62,23 @@ public class ReadWriteHandler implements CompletionHandler<Integer, Attachment> 
     public String getBrokerRequest() {
         String                  brokerRequest;
         String                  userInput;
-        BrokerRequestCreation brokerRequestCreation;
+        BrokerRequestCreation   brokerRequestCreation;
+        BufferedReader          bufferedReader;
+        boolean                 getValidInput;
 
-        while (true) {
-            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in))) {
+        getValidInput = false;
+        brokerRequest = "";
+        bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        while (!getValidInput) {
+            System.out.print(">> ");
+            try {
                 userInput = bufferedReader.readLine();
                 brokerRequestCreation = new BrokerRequestCreation(userInput);
                 brokerRequest = brokerRequestCreation.createBrokerRequest();
-                break ;
+                getValidInput = true;
             }
             catch (IOException e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
         return (brokerRequest);
