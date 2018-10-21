@@ -14,6 +14,8 @@ public class ConnectionHandler implements CompletionHandler<AsynchronousSocketCh
             SocketAddress       clientAddress;
             ReadWriteHandler    readWriteHandler;
             Attachment          newAttachment;
+            String              testBrokerId;
+            byte[]              byteTestBrokerId;
 
             clientAddress = client.getRemoteAddress();
             System.out.println("Accepted connection from " + clientAddress);
@@ -22,10 +24,14 @@ public class ConnectionHandler implements CompletionHandler<AsynchronousSocketCh
             newAttachment.setServerChannel(attachment.getServerChannel());
             newAttachment.setClientChannel(client);
             newAttachment.setBuffer(ByteBuffer.allocate(2048));
-            newAttachment.setRead(true);
+            newAttachment.setRead(false);
             newAttachment.setClientAddress(clientAddress);
+            testBrokerId = "100000";
+            byteTestBrokerId = testBrokerId.getBytes();
+            newAttachment.getBuffer().put(byteTestBrokerId);
+            newAttachment.getBuffer().flip();
             readWriteHandler = new ReadWriteHandler();
-            client.read(newAttachment.getBuffer(), newAttachment, readWriteHandler);
+            client.write(newAttachment.getBuffer(), newAttachment, readWriteHandler);
         }
         catch (IOException e) {
             e.printStackTrace();

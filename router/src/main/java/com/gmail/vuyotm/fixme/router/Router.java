@@ -1,7 +1,5 @@
 package com.gmail.vuyotm.fixme.router;
 
-import com.sun.xml.internal.ws.api.message.Attachment;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.AsynchronousServerSocketChannel;
@@ -12,7 +10,7 @@ public class Router {
 
         AsynchronousServerSocketChannel     serverChannel;
         InetSocketAddress                   serverAddress;
-        Attachment attachment;
+        Attachment                          attachment;
 
         serverChannel = AsynchronousServerSocketChannel.open();
         serverAddress = new InetSocketAddress("localhost", 5000);
