@@ -13,7 +13,7 @@ public class Router {
         Attachment                          attachment;
 
         serverChannel = AsynchronousServerSocketChannel.open();
-        serverAddress = new InetSocketAddress("localhost", 5000);
+        serverAddress = new InetSocketAddress("localhost", 5001);
         serverChannel.bind(serverAddress);
         System.out.println("Server is listening at " + serverAddress + " ...");
         attachment = new Attachment();
