@@ -1,9 +1,7 @@
 package com.gmail.vuyotm.fixme.broker.request;
 
 import com.gmail.vuyotm.fixme.broker.BrokerData;
-import com.gmail.vuyotm.fixme.broker.fixmsg.FixMsg;
-import com.gmail.vuyotm.fixme.broker.fixmsg.FixMsgFactory;
-import com.gmail.vuyotm.fixme.broker.fixmsg.FixMsgOrder;
+import com.gmail.vuyotm.fixme.core.*;
 import com.gmail.vuyotm.fixme.broker.validation.BrokerInputValidation;
 import java.io.IOException;
 

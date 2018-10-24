@@ -1,6 +1,6 @@
 package com.gmail.vuyotm.fixme.market;
 
-import com.gmail.vuyotm.fixme.market.fixmsg.FixMsg;
+import com.gmail.vuyotm.fixme.core.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

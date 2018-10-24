@@ -1,6 +1,6 @@
 package com.gmail.vuyotm.fixme.market;
 
-import com.gmail.vuyotm.fixme.market.fixmsg.*;
+import com.gmail.vuyotm.fixme.core.*;
 
 public class ResponseGenerator {
 
