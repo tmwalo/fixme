@@ -15,7 +15,7 @@ public abstract class FixMsgFactory {
 
     }
 
-    public static FixMsgExecute newExecMsg(String senderCompId, String targetCompId, String orderId, String execId, String execTransType, String orderStatus, String tickerSymbol, String side, int orderQty, int cumQty, float avgPx) {
+    public static FixMsgExecute newExecMsg(String senderCompId, String targetCompId, String orderId, String tickerSymbol, String side, int orderQty, int cumQty, float avgPx) {
 
         FixMsgHeader    fixMsgHeader;
         FixMsgTrailer   fixMsgTrailer;
@@ -23,7 +23,7 @@ public abstract class FixMsgFactory {
 
         fixMsgHeader = new FixMsgHeader(senderCompId, targetCompId);
         fixMsgTrailer = new FixMsgTrailer();
-        fixMsgExecute = new FixMsgExecute(fixMsgHeader, fixMsgTrailer, orderId, execId, execTransType, orderStatus, tickerSymbol, side, orderQty, cumQty, avgPx);
+        fixMsgExecute = new FixMsgExecute(fixMsgHeader, fixMsgTrailer, orderId, tickerSymbol, side, orderQty, cumQty, avgPx);
         return (fixMsgExecute);
 
     }

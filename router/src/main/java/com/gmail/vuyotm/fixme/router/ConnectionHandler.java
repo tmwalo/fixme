@@ -19,18 +19,19 @@ public class ConnectionHandler implements CompletionHandler<AsynchronousSocketCh
 
             clientAddress = client.getRemoteAddress();
             System.out.println("Accepted connection from " + clientAddress);
-            attachment.getServerChannel().accept(attachment, this);               // WHY?
+            attachment.getServerChannel().accept(attachment, this);
             newAttachment = new Attachment();
             newAttachment.setServerChannel(attachment.getServerChannel());
             newAttachment.setClientChannel(client);
             newAttachment.setBuffer(ByteBuffer.allocate(2048));
             newAttachment.setRead(false);
             newAttachment.setClientAddress(clientAddress);
-            testBrokerId = "100000";
+            testBrokerId = "111222";
             byteTestBrokerId = testBrokerId.getBytes();
             newAttachment.getBuffer().put(byteTestBrokerId);
             newAttachment.getBuffer().flip();
             readWriteHandler = new ReadWriteHandler();
+            System.out.println("Write broker Id: " + testBrokerId);
             client.write(newAttachment.getBuffer(), newAttachment, readWriteHandler);
         }
         catch (IOException e) {

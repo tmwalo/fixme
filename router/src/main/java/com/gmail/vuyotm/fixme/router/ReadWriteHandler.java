@@ -39,6 +39,13 @@ public class ReadWriteHandler implements CompletionHandler<Integer, Attachment> 
             attachment.getClientChannel().read(attachment.getBuffer(), attachment, this);
         }
 
+        //   Test Values
+        //   msg = "100200 list markets";
+        //   msg = "100200 list 111222";
+        //   msg = "8=FIX.4.0|9=86|35=D|49=100000|56=100000|34=1|52=20181022-07:09:54|11=1|21=1|55=NVDA|54=1|38=777|40=1|10=019|";
+        //   msg = "8=FIX.4.0|9=85|35=D|49=777890|56=980123|34=1|52=20181022-09:20:28|11=1|21=1|55=AAPL|54=2|38=13|40=1|10=254|";
+        //   msg = "unknown request";
+
     }
 
     @Override

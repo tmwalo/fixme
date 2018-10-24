@@ -4,10 +4,12 @@ public abstract class FixMsgType {
 
     private final FixMsgHeader      fixMsgHeader;
     private final FixMsgTrailer     fixMsgTrailer;
+    private static int              orderId = 0;
 
     public FixMsgType(FixMsgHeader fixMsgHeader, FixMsgTrailer fixMsgTrailer) {
         this.fixMsgHeader = fixMsgHeader;
         this.fixMsgTrailer = fixMsgTrailer;
+        ++orderId;
     }
 
     public FixMsgHeader getFixMsgHeader() {
@@ -16,6 +18,10 @@ public abstract class FixMsgType {
 
     public FixMsgTrailer getFixMsgTrailer() {
         return fixMsgTrailer;
+    }
+
+    public static int getOrderId() {
+        return orderId;
     }
 
 }

@@ -3,11 +3,11 @@ package com.gmail.vuyotm.fixme.core;
 public class FixMsgExecute extends FixMsgType {
 
     private static final String     MSG_TYPE = "8";
+    private static int              execId = 0;
 
     private final String            orderId;
-    private final String            execId;
-    private final String            execTransType;
-    private final String            orderStatus;
+    private final String            execTransType = FixMsg.EXEC_TRANS_TYPE_VAL_NEW;
+    private final String            orderStatus = FixMsg.ORDER_STATUS_FILLED;
     private final String            tickerSymbol;
     private final String            side;
     private final int               orderQty;
@@ -18,12 +18,9 @@ public class FixMsgExecute extends FixMsgType {
     private String                  avgPxStr;
     private String                  fixMsgExec;
 
-    public FixMsgExecute(FixMsgHeader fixMsgHeader, FixMsgTrailer fixMsgTrailer, String orderId, String execId, String execTransType, String orderStatus, String tickerSymbol, String side, int orderQty, int cumQty, float avgPx) {
+    public FixMsgExecute(FixMsgHeader fixMsgHeader, FixMsgTrailer fixMsgTrailer, String orderId, String tickerSymbol, String side, int orderQty, int cumQty, float avgPx) {
         super(fixMsgHeader, fixMsgTrailer);
         this.orderId = orderId;
-        this.execId = execId;
-        this.execTransType = execTransType;
-        this.orderStatus = orderStatus;
         this.tickerSymbol = tickerSymbol;
         this.side = side;
         this.orderQty = orderQty;
@@ -32,6 +29,7 @@ public class FixMsgExecute extends FixMsgType {
         cumQtyStr = Integer.toString(this.cumQty);
         this.avgPx = avgPx;
         avgPxStr = Float.toString(this.avgPx);
+        ++execId;
         getFixMsgHeader().setMsgType(MSG_TYPE);
     }
 

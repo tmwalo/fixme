@@ -12,9 +12,9 @@ public class BrokerRequestCreation {
     private String                  brokerInput;
     private static final String     ERROR_TYPE_MSG = "Error: Invalid input.";
     private static final String     USAGE_MSG = "Broker Commands:" + System.lineSeparator()
-            + "list markets - lists market IDs of all available markets." + System.lineSeparator()
-            + "list market_ID - lists details of market with specified ID." + System.lineSeparator()
-            + "buy|sell qty ticker_symbol market_ID - place buy or sell order." + System.lineSeparator();
+                                                + "list markets - lists market IDs of all available markets." + System.lineSeparator()
+                                                + "list market_ID - lists details of market with specified ID." + System.lineSeparator()
+                                                + "buy|sell qty ticker_symbol market_ID - place buy or sell order." + System.lineSeparator();
     private static final String     ERROR_MSG = ERROR_TYPE_MSG + System.lineSeparator()
             + USAGE_MSG;
 
@@ -29,11 +29,11 @@ public class BrokerRequestCreation {
             throw new IOException(ERROR_MSG);
 
         if (BrokerInputValidation.isListMarkets(brokerInput)) {
-            brokerRequest = brokerInput;
+            brokerRequest = BrokerData.getBrokerId() + " " + brokerInput;
             return (brokerRequest);
         }
         else if (BrokerInputValidation.isListMarket(brokerInput)) {
-            brokerRequest = brokerInput;
+            brokerRequest = BrokerData.getBrokerId() + " " + brokerInput;
             return (brokerRequest);
         }
         else if (BrokerInputValidation.isBuyOrder(brokerInput) || BrokerInputValidation.isSellOrder(brokerInput)) {
@@ -47,7 +47,7 @@ public class BrokerRequestCreation {
             String          quantityStr;
             int             quantity;
             String          orderType;
-            FixMsgOrder fixMsgOrder;
+            FixMsgOrder     fixMsgOrder;
 
             tokens = brokerInput.split(" ");
             brokerId = BrokerData.getBrokerId();

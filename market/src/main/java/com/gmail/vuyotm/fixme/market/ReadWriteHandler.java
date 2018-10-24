@@ -1,5 +1,7 @@
 package com.gmail.vuyotm.fixme.market;
 
+import com.gmail.vuyotm.fixme.market.request_process_chain.RequestProcessChain;
+
 import java.nio.channels.CompletionHandler;
 
 public class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
@@ -11,29 +13,19 @@ public class ReadWriteHandler implements CompletionHandler<Integer, Attachment> 
             int                     limits;
             byte[]                  routerRequestBytes;
             String                  routerRequest;
-            String                  marketResponse;
-            byte[]                  byteMarketResponse;
+            Request                 request;
+            RequestProcessChain     requestProcessChain;
 
             attachment.getBuffer().flip();
             limits = attachment.getBuffer().limit();
             routerRequestBytes = new byte[limits];
             attachment.getBuffer().get(routerRequestBytes, 0, limits);
             routerRequest = new String(routerRequestBytes);
-            if (!attachment.isMarketIdSet()) {
-                MarketData.setMarketId(routerRequest);
-                attachment.setMarketIdSet(true);
-                System.out.print("Market Id: ");
-            }
             System.out.println(routerRequest);
 
-
-
-            attachment.getBuffer().clear();
-            byteMarketResponse = marketResponse.getBytes();
-            attachment.getBuffer().put(byteMarketResponse);
-            attachment.getBuffer().flip();
-            attachment.setRead(false);
-            attachment.getClientChannel().write(attachment.getBuffer(), attachment, this);
+            request = new Request(attachment, routerRequest);
+            requestProcessChain = new RequestProcessChain();
+            requestProcessChain.getProcessChain1().execute(request);
         }
         else {
             attachment.setRead(true);

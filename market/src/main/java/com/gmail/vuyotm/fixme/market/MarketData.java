@@ -4,12 +4,19 @@ import java.util.HashMap;
 
 public class MarketData {
 
+    private static MarketData           marketData = null;
     private static String               marketId;
     private HashMap<String, Stock>      stocks;
 
-    public MarketData() {
+    private MarketData() {
         stocks = new HashMap<>();
         initStocks();
+    }
+
+    public static MarketData getInstance() {
+        if (marketData == null)
+            marketData = new MarketData();
+        return (marketData);
     }
 
     private void initStocks() {
@@ -25,6 +32,27 @@ public class MarketData {
         stocks.put("TSLA", new Stock("TSLA", 260f, 100));
     }
 
+    @Override
+    public String toString() {
+        String  marketDataStr;
+
+        marketDataStr = "";
+        marketDataStr += "Market ID: ";
+        marketDataStr += marketId + System.lineSeparator();
+        marketDataStr += "Instruments:" + System.lineSeparator();
+        for (HashMap.Entry<String, Stock> stock : stocks.entrySet() ) {
+            String      tickerSymbol;
+            float       price;
+            int         qty;
+
+            tickerSymbol = stock.getKey();
+            price = stock.getValue().getPrice();
+            qty = stock.getValue().getQty();
+            marketDataStr += tickerSymbol + ":     $" + price + "   " + qty + System.lineSeparator();
+        }
+        return (marketDataStr);
+    }
+
     public static String getMarketId() {
         return marketId;
     }
@@ -35,6 +63,10 @@ public class MarketData {
 
     public HashMap<String, Stock> getStocks() {
         return stocks;
+    }
+
+    public String getMarketData() {
+        return (this.getMarketData());
     }
 
 }

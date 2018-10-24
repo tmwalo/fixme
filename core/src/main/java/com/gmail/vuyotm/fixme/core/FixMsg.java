@@ -2,10 +2,6 @@ package com.gmail.vuyotm.fixme.core;
 
 public class FixMsg {
 
-    public static final String      ORDER_MSG = "order";
-    public static final String      EXECUTE_MSG = "execute";
-    public static final String      REJECT_MSG = "reject";
-
     public static final String      TAG_VAL_SEPARATOR = "|";
     public static final String      TAG_VAL_LINK = "=";
 
@@ -31,9 +27,17 @@ public class FixMsg {
     public static final String      AVG_PX_TAG = "6";
     public static final String      REF_SEQ_NUM_TAG = "45";
 
+    public static final String      FIX_VERSION = "FIX.4.0";
     public static final String      AUTO_EXEC_PRIVATE_NO_BROKER = "1";
     public static final String      BUY = "1";
     public static final String      SELL = "2";
     public static final String      MARKET_ORDER_TYPE = "1";
+    public static final String      ORDER_MSG_TYPE = "D";
+    public static final String      EXEC_TRANS_TYPE_VAL_NEW = "0";
+    public static final String      ORDER_STATUS_FILLED = "filled";
+
+    public static final String      SENDING_TIME_PATTERN = "yyyyMMdd-HH:mm:ss";
+
+    public static final int         ORDER_MSG_REQUIRED_FIELDS = 14;
 
 }

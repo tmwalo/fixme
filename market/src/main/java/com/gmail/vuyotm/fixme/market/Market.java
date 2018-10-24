@@ -9,12 +9,13 @@ import java.util.concurrent.Future;
 
 public class Market {
 
-    public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
+    public static void main(String[] args) {
 
-        AsynchronousSocketChannel   clientChannel;
-        Future<Void>                result;
-        Attachment                  attachment;
+        AsynchronousSocketChannel clientChannel;
+        Future<Void> result;
+        Attachment attachment;
 
+        try {
         clientChannel = AsynchronousSocketChannel.open();
         result = clientChannel.connect(new InetSocketAddress("localhost", 5001));
         result.get();
@@ -28,6 +29,16 @@ public class Market {
         clientChannel.read(attachment.getBuffer(), attachment, new ReadWriteHandler());
 
         attachment.getMainThread().join();
+        }
+        catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        catch (ExecutionException e) {
+            System.out.println(e.getMessage());
+        }
+        catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
