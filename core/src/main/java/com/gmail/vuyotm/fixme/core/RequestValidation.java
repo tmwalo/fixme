@@ -1,11 +1,8 @@
-package com.gmail.vuyotm.fixme.market;
-
-import com.gmail.vuyotm.fixme.core.*;
+package com.gmail.vuyotm.fixme.core;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
 
 public class RequestValidation {
 
@@ -18,6 +15,8 @@ public class RequestValidation {
     private static final String     ORDER_QTY_MIN_STR = Integer.toString(ORDER_QTY_MIN);
     private static final String     ORDER_QTY_MAX_STR = Integer.toString(ORDER_QTY_MAX);
     private static final int        MOD_VAL = 256;
+
+    private static final String     MARKET_DATA_LABEL = "MarketData";
 
     public static boolean isValidStr(String request) {
         if ((request == null) || (request.length() == 0) || (request.equals("")))
@@ -76,13 +75,44 @@ public class RequestValidation {
             return (false);
     }
 
+    public static boolean isListMarketsResponse(String request) {
+        String[]    tokens;
+
+        if (!isValidStr(request))
+            return (false);
+        tokens = request.split(" ");
+        if ((tokens.length == 2) && isMarketId(tokens[0]) && isMarketId(tokens[1]))
+            return (true);
+        else
+            return (false);
+    }
+
     public static boolean isListMarket(String request) {
         String[]    tokens;
 
         if (!isValidStr(request))
             return (false);
         tokens = request.split(" ");
-        if ((tokens.length == 3) && isMarketId(tokens[0]) && ((tokens[1]).equals("list")) && isMarketId(tokens[2]) && (tokens[2]).equals(MarketData.getMarketId()))
+        if ((tokens.length == 3) && isMarketId(tokens[0]) && ((tokens[1]).equals("list")) && isMarketId(tokens[2]) )
+            return (true);
+        else
+            return (false);
+    }
+
+    public static boolean isListMarketResponse(String request) {
+        String[]    tokens;
+
+        if (!isValidStr(request))
+            return (false);
+        tokens = request.split(" ");
+        if ((tokens.length >= 2) && isMarketId(tokens[0]) && (tokens[1]).equals(MARKET_DATA_LABEL))
+            return (true);
+        else
+            return (false);
+    }
+
+    public static boolean isListReqOrResp(String request) {
+        if (isListMarkets(request) || isListMarket(request) || isListMarketsResponse(request) || isListMarketResponse(request))
             return (true);
         else
             return (false);
@@ -174,7 +204,7 @@ public class RequestValidation {
         if (!isValidStr(request))
             return (false);
         tokens = request.split(FixMsg.TAG_VAL_LINK);
-        if ((tokens.length == 2) && ((tokens[0]).equals(FixMsg.TARGET_COMP_ID_TAG)) && isMarketId(tokens[1]) && (tokens[1]).equals(MarketData.getMarketId()))
+        if ((tokens.length == 2) && ((tokens[0]).equals(FixMsg.TARGET_COMP_ID_TAG)) && isMarketId(tokens[1]) )
             return (true);
         else
             return (false);
@@ -258,13 +288,13 @@ public class RequestValidation {
             return (false);
     }
 
-    public static boolean isTickerSymbolTagVal(String request, HashMap tickerSymbols) {
+    public static boolean isTickerSymbolTagVal(String request) {
         String[]    tokens;
 
-        if (!isValidStr(request) || (tickerSymbols == null))
+        if (!isValidStr(request))
             return (false);
         tokens = request.split(FixMsg.TAG_VAL_LINK);
-        if ((tokens.length == 2) && ((tokens[0]).equals(FixMsg.SYMBOL_TAG)) && tickerSymbols.containsKey(tokens[1]))
+        if ((tokens.length == 2) && ((tokens[0]).equals(FixMsg.SYMBOL_TAG)) && isValidStr(tokens[1]))
             return (true);
         else
             return (false);
@@ -367,13 +397,11 @@ public class RequestValidation {
             return (false);
     }
 
-    public static boolean isBuyOrder(String request) {
+    public static boolean isOrder(String request) {
         String[]    tokens;
-        MarketData  stockMarketData;
 
         if (!isValidStr(request))
             return (false);
-        stockMarketData = MarketData.getInstance();
         tokens = request.split("\\" + FixMsg.TAG_VAL_SEPARATOR);
         if ((tokens.length == FixMsg.ORDER_MSG_REQUIRED_FIELDS)
                 && isBeginStrTagVal(tokens[0])
@@ -385,8 +413,8 @@ public class RequestValidation {
                 && isSendingTimeTagVal(tokens[6])
                 && isCliOrdIdTagVal(tokens[7])
                 && isHandlInstTagVal(tokens[8])
-                && isTickerSymbolTagVal(tokens[9], stockMarketData.getStocks())
-                && isSideTagValBuy(tokens[10])
+                && isTickerSymbolTagVal(tokens[9])
+                && isValidStr(tokens[10])
                 && isOrderQtyTagVal(tokens[11])
                 && isOrderTypeTagVal(tokens[12])
                 && isCheckSumTagVal(tokens[13], request)
@@ -399,31 +427,27 @@ public class RequestValidation {
         }
     }
 
-    public static boolean isSellOrder(String request) {
+    public static boolean isBuyOrder(String request) {
         String[]    tokens;
-        MarketData  stockMarketData;
 
         if (!isValidStr(request))
             return (false);
-        stockMarketData = MarketData.getInstance();
         tokens = request.split("\\" + FixMsg.TAG_VAL_SEPARATOR);
-        if ((tokens.length == FixMsg.ORDER_MSG_REQUIRED_FIELDS)
-                && isBeginStrTagVal(tokens[0])
-                && isBodyLenTagVal(tokens[1], request)
-                && isMsgTypeTagVal(tokens[2])
-                && isSenderCompIdTagVal(tokens[3])
-                && isTargetCompIdTagVal(tokens[4])
-                && isMsgSeqNumTagVal(tokens[5])
-                && isSendingTimeTagVal(tokens[6])
-                && isCliOrdIdTagVal(tokens[7])
-                && isHandlInstTagVal(tokens[8])
-                && isTickerSymbolTagVal(tokens[9], stockMarketData.getStocks())
-                && isSideTagValSell(tokens[10])
-                && isOrderQtyTagVal(tokens[11])
-                && isOrderTypeTagVal(tokens[12])
-                && isCheckSumTagVal(tokens[13], request)
-                )
-        {
+        if (isOrder(request) && isSideTagValBuy(tokens[10])) {
+            return (true);
+        }
+        else {
+            return (false);
+        }
+    }
+
+    public static boolean isSellOrder(String request) {
+        String[]    tokens;
+
+        if (!isValidStr(request))
+            return (false);
+        tokens = request.split("\\" + FixMsg.TAG_VAL_SEPARATOR);
+        if (isOrder(request) && isSideTagValSell(tokens[10])) {
             return (true);
         }
         else {

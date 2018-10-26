@@ -1,7 +1,8 @@
 package com.gmail.vuyotm.fixme.market.request_process_chain;
 
+import com.gmail.vuyotm.fixme.market.MarketDataValidation;
 import com.gmail.vuyotm.fixme.market.Request;
-import com.gmail.vuyotm.fixme.market.RequestValidation;
+import com.gmail.vuyotm.fixme.core.RequestValidation;
 
 public class ValidationProcess extends ProcessChain {
 
@@ -12,13 +13,13 @@ public class ValidationProcess extends ProcessChain {
         if (RequestValidation.isListMarkets(request.getRequest())) {
             requestType = Request.LIST_MARKETS;
         }
-        else if (RequestValidation.isListMarket(request.getRequest())) {
+        else if (MarketDataValidation.isListMarket(request.getRequest())) {
             requestType = Request.LIST_MARKET_ID;
         }
-        else if (RequestValidation.isBuyOrder(request.getRequest())) {
+        else if (MarketDataValidation.isBuyOrder(request.getRequest())) {
             requestType = Request.BUY_ORDER;
         }
-        else if (RequestValidation.isSellOrder(request.getRequest())) {
+        else if (MarketDataValidation.isSellOrder(request.getRequest())) {
             requestType = Request.SELL_ORDER;
         }
         else {
