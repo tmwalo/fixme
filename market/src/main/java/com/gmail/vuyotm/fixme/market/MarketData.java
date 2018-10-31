@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 public class MarketData {
 
+    private static final String         MARKET_DATA_LABEL = "MarketData";
+
     private static MarketData           marketData = null;
     private static String               marketId;
     private HashMap<String, Stock>      stocks;
@@ -37,7 +39,7 @@ public class MarketData {
         String  marketDataStr;
 
         marketDataStr = "";
-        marketDataStr += "Market ID: ";
+        marketDataStr += MARKET_DATA_LABEL + " for ";
         marketDataStr += marketId + System.lineSeparator();
         marketDataStr += "Instruments:" + System.lineSeparator();
         for (HashMap.Entry<String, Stock> stock : stocks.entrySet() ) {

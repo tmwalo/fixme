@@ -9,7 +9,6 @@ public abstract class FixMsgType {
     public FixMsgType(FixMsgHeader fixMsgHeader, FixMsgTrailer fixMsgTrailer) {
         this.fixMsgHeader = fixMsgHeader;
         this.fixMsgTrailer = fixMsgTrailer;
-        ++orderId;
     }
 
     public FixMsgHeader getFixMsgHeader() {
@@ -21,7 +20,8 @@ public abstract class FixMsgType {
     }
 
     public static int getOrderId() {
-        return orderId;
+        ++orderId;
+        return (orderId);
     }
 
 }

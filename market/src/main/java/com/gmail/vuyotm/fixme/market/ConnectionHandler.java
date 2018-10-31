@@ -17,14 +17,11 @@ public class ConnectionHandler implements CompletionHandler<Integer, Attachment>
             routerRequestBytes = new byte[limits];
             attachment.getBuffer().get(routerRequestBytes, 0, limits);
             routerRequest = new String(routerRequestBytes);
-            System.out.println("router Request: " + routerRequest);
             if (!attachment.isMarketIdSet()) {
                 MarketData.setMarketId(routerRequest);
                 attachment.setMarketIdSet(true);
-                System.out.print("Market Id: ");
             }
             System.out.println(routerRequest);
-
             attachment.getBuffer().clear();
             attachment.getClientChannel().read(attachment.getBuffer(), attachment, new ReadWriteHandler());
         }

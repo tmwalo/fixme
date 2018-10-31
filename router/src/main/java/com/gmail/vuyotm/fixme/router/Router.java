@@ -1,25 +1,27 @@
 package com.gmail.vuyotm.fixme.router;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.nio.channels.AsynchronousServerSocketChannel;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Router {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    private static final String     HOST = "localhost";
+    public static final int         BROKER_PORT = 5000;
+    public static final int         MARKET_PORT = 5001;
+    private static final int        NUM_OF_THREADS = 2;
 
-        AsynchronousServerSocketChannel     serverChannel;
-        InetSocketAddress                   serverAddress;
-        Attachment                          attachment;
+    public static void main(String[] args) {
 
-        serverChannel = AsynchronousServerSocketChannel.open();
-        serverAddress = new InetSocketAddress("localhost", 5001);
-        serverChannel.bind(serverAddress);
-        System.out.println("Server is listening at " + serverAddress + " ...");
-        attachment = new Attachment();
-        attachment.setServerChannel(serverChannel);
-        serverChannel.accept(attachment, new ConnectionHandler());
-        Thread.currentThread().join();
+        ExecutorService     executorService;
+        Runnable            brokerTask;
+        Runnable            marketTask;
+
+        executorService = Executors.newFixedThreadPool(NUM_OF_THREADS);
+        brokerTask = new TaskListen(HOST, BROKER_PORT);
+        marketTask = new TaskListen(HOST, MARKET_PORT);
+        executorService.submit(brokerTask);
+        executorService.submit(marketTask);
+        executorService.shutdown();
 
     }
 

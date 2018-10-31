@@ -26,6 +26,8 @@ public class FixMsg {
     public static final String      CUM_QTY_TAG = "14";
     public static final String      AVG_PX_TAG = "6";
     public static final String      REF_SEQ_NUM_TAG = "45";
+    public static final String      EXEC_MSG_TYPE_TAG = "8";
+    public static final String      REJECT_MSG_TYPE_TAG = "3";
 
     public static final String      FIX_VERSION = "FIX.4.0";
     public static final String      AUTO_EXEC_PRIVATE_NO_BROKER = "1";
@@ -39,5 +41,7 @@ public class FixMsg {
     public static final String      SENDING_TIME_PATTERN = "yyyyMMdd-HH:mm:ss";
 
     public static final int         ORDER_MSG_REQUIRED_FIELDS = 14;
+    public static final int         EXECUTE_MSG_REQUIRED_FIELDS = 17;
+    public static final int         REJECT_MSG_REQUIRED_FIELDS = 9;
 
 }

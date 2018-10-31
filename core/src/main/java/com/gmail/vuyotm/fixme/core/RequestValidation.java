@@ -75,13 +75,26 @@ public class RequestValidation {
             return (false);
     }
 
+    public static boolean eachTokenIsMarketId(String request) {
+        String[]    tokens;
+
+        if (!isValidStr(request))
+            return (false);
+        tokens = request.split(" ");
+        for (String token : tokens) {
+            if (!isMarketId(token))
+                return (false);
+        }
+        return (true);
+    }
+
     public static boolean isListMarketsResponse(String request) {
         String[]    tokens;
 
         if (!isValidStr(request))
             return (false);
         tokens = request.split(" ");
-        if ((tokens.length == 2) && isMarketId(tokens[0]) && isMarketId(tokens[1]))
+        if ((tokens.length >= 2) && eachTokenIsMarketId(request))
             return (true);
         else
             return (false);
@@ -186,6 +199,30 @@ public class RequestValidation {
             return (false);
     }
 
+    public static boolean isExecMsgTypeTagVal(String request) {
+        String[]    tokens;
+
+        if (!isValidStr(request))
+            return (false);
+        tokens = request.split(FixMsg.TAG_VAL_LINK);
+        if ((tokens.length == 2) && ((tokens[0]).equals(FixMsg.MSG_TYPE_TAG)) && (tokens[1]).equals(FixMsg.EXEC_MSG_TYPE_TAG))
+            return (true);
+        else
+            return (false);
+    }
+
+    public static boolean isRejectMsgTypeTagVal(String request) {
+        String[]    tokens;
+
+        if (!isValidStr(request))
+            return (false);
+        tokens = request.split(FixMsg.TAG_VAL_LINK);
+        if ((tokens.length == 2) && ((tokens[0]).equals(FixMsg.MSG_TYPE_TAG)) && (tokens[1]).equals(FixMsg.REJECT_MSG_TYPE_TAG))
+            return (true);
+        else
+            return (false);
+    }
+
     public static boolean isSenderCompIdTagVal(String request) {
         String[]    tokens;
 
@@ -239,6 +276,18 @@ public class RequestValidation {
             return (false);
     }
 
+    public static boolean isRefSeqNumTagVal(String request) {
+        String[]    tokens;
+
+        if (!isValidStr(request))
+            return (false);
+        tokens = request.split(FixMsg.TAG_VAL_LINK);
+        if ((tokens.length == 2) && ((tokens[0]).equals(FixMsg.REF_SEQ_NUM_TAG)) && isMsgSeqNum(tokens[1]))
+            return (true);
+        else
+            return (false);
+    }
+
     public static boolean isSendingTimeVal(String request) {
         if (!isValidStr(request))
             return (false);
@@ -250,6 +299,7 @@ public class RequestValidation {
 
         }
         return (false);
+
     }
 
     public static boolean isSendingTimeTagVal(String request) {
@@ -343,6 +393,91 @@ public class RequestValidation {
             return (false);
         tokens = request.split(FixMsg.TAG_VAL_LINK);
         if ((tokens.length == 2) && ((tokens[0]).equals(FixMsg.ORDER_TYPE_TAG)) && (tokens[1]).equals(FixMsg.MARKET_ORDER_TYPE))
+            return (true);
+        else
+            return (false);
+    }
+
+    public static boolean isOrderIdTagVal(String request) {
+        String[]    tokens;
+
+        if (!isValidStr(request))
+            return (false);
+        tokens = request.split(FixMsg.TAG_VAL_LINK);
+        if ((tokens.length == 2) && ((tokens[0]).equals(FixMsg.ORDER_ID_TAG)) && isMsgSeqNum(tokens[1]))
+            return (true);
+        else
+            return (false);
+    }
+
+    public static boolean isExecIdTagVal(String request) {
+        String[]    tokens;
+
+        if (!isValidStr(request))
+            return (false);
+        tokens = request.split(FixMsg.TAG_VAL_LINK);
+        if ((tokens.length == 2) && ((tokens[0]).equals(FixMsg.EXEC_ID_TAG)) && isMsgSeqNum(tokens[1]))
+            return (true);
+        else
+            return (false);
+    }
+
+    public static boolean isExecTransTypeTagVal(String request) {
+        String[]    tokens;
+
+        if (!isValidStr(request))
+            return (false);
+        tokens = request.split(FixMsg.TAG_VAL_LINK);
+        if ((tokens.length == 2) && ((tokens[0]).equals(FixMsg.EXEC_TRANS_TYPE_TAG)) && (tokens[1]).equals(FixMsg.EXEC_TRANS_TYPE_VAL_NEW))
+            return (true);
+        else
+            return (false);
+    }
+
+    public static boolean isOrdStatusTagVal(String request) {
+        String[]    tokens;
+
+        if (!isValidStr(request))
+            return (false);
+        tokens = request.split(FixMsg.TAG_VAL_LINK);
+        if ((tokens.length == 2) && ((tokens[0]).equals(FixMsg.ORDER_STATUS_TAG)) && (tokens[1]).equals(FixMsg.ORDER_STATUS_FILLED))
+            return (true);
+        else
+            return (false);
+    }
+
+    public static boolean isCumQtyTagVal(String request) {
+        String[]    tokens;
+
+        if (!isValidStr(request))
+            return (false);
+        tokens = request.split(FixMsg.TAG_VAL_LINK);
+        if ((tokens.length == 2) && ((tokens[0]).equals(FixMsg.CUM_QTY_TAG)) && isValidQty(tokens[1]))
+            return (true);
+        else
+            return (false);
+    }
+
+    public  static boolean isFloat(String request) {
+        if (!isValidStr(request))
+            return (false);
+        try {
+            Float.parseFloat(request);
+            return (true);
+        }
+        catch (NumberFormatException e) {
+
+        }
+        return (false);
+    }
+
+    public static boolean isAvgPxTagVal(String request) {
+        String[]    tokens;
+
+        if (!isValidStr(request))
+            return (false);
+        tokens = request.split(FixMsg.TAG_VAL_LINK);
+        if ((tokens.length == 2) && ((tokens[0]).equals(FixMsg.AVG_PX_TAG)) && isFloat(tokens[1]))
             return (true);
         else
             return (false);
@@ -453,6 +588,78 @@ public class RequestValidation {
         else {
             return (false);
         }
+    }
+
+    public static boolean isSideTagVal(String request) {
+        if (isSideTagValBuy(request) || isSideTagValSell(request))
+            return (true);
+        else
+            return (false);
+    }
+
+    public static boolean isExecuteMsg(String request) {
+        String[]    tokens;
+
+        if (!isValidStr(request))
+            return (false);
+        tokens = request.split("\\" + FixMsg.TAG_VAL_SEPARATOR);
+        if ((tokens.length == FixMsg.EXECUTE_MSG_REQUIRED_FIELDS)
+                && isBeginStrTagVal(tokens[0])
+                && isBodyLenTagVal(tokens[1], request)
+                && isExecMsgTypeTagVal(tokens[2])
+                && isSenderCompIdTagVal(tokens[3])
+                && isTargetCompIdTagVal(tokens[4])
+                && isMsgSeqNumTagVal(tokens[5])
+                && isSendingTimeTagVal(tokens[6])
+                && isOrderIdTagVal(tokens[7])
+                && isExecIdTagVal(tokens[8])
+                && isExecTransTypeTagVal(tokens[9])
+                && isOrdStatusTagVal(tokens[10])
+                && isTickerSymbolTagVal(tokens[11])
+                && isSideTagVal(tokens[12])
+                && isOrderQtyTagVal(tokens[13])
+                && isCumQtyTagVal(tokens[14])
+                && isAvgPxTagVal(tokens[15])
+                && isCheckSumTagVal(tokens[16], request)
+                )
+        {
+            return (true);
+        }
+        else {
+            return (false);
+        }
+    }
+
+    public static boolean isRejectMsg(String request) {
+        String[]    tokens;
+
+        if (!isValidStr(request))
+            return (false);
+        tokens = request.split("\\" + FixMsg.TAG_VAL_SEPARATOR);
+        if ((tokens.length == FixMsg.REJECT_MSG_REQUIRED_FIELDS)
+                && isBeginStrTagVal(tokens[0])
+                && isBodyLenTagVal(tokens[1], request)
+                && isRejectMsgTypeTagVal(tokens[2])
+                && isSenderCompIdTagVal(tokens[3])
+                && isTargetCompIdTagVal(tokens[4])
+                && isMsgSeqNumTagVal(tokens[5])
+                && isSendingTimeTagVal(tokens[6])
+                && isRefSeqNumTagVal(tokens[7])
+                && isCheckSumTagVal(tokens[8], request)
+                )
+        {
+            return (true);
+        }
+        else {
+            return (false);
+        }
+    }
+
+    public static boolean isFixMsg(String request) {
+        if (isBuyOrder(request) || isSellOrder(request) || isExecuteMsg(request) || isRejectMsg(request))
+            return (true);
+        else
+            return (false);
     }
 
 }

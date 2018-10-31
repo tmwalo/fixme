@@ -8,14 +8,16 @@ import java.nio.channels.CompletionHandler;
 
 public class ConnectionHandler implements CompletionHandler<AsynchronousSocketChannel, Attachment> {
 
+    private static int      routingId = 100000;
+
     @Override
     public void completed(AsynchronousSocketChannel client, Attachment attachment) {
         try {
             SocketAddress       clientAddress;
-            ReadWriteHandler    readWriteHandler;
             Attachment          newAttachment;
-            String              testBrokerId;
-            byte[]              byteTestBrokerId;
+            String              routingIdStr;
+            byte[]              byteRoutingId;
+            RoutingTable        routingTable;
 
             clientAddress = client.getRemoteAddress();
             System.out.println("Accepted connection from " + clientAddress);
@@ -23,26 +25,29 @@ public class ConnectionHandler implements CompletionHandler<AsynchronousSocketCh
             newAttachment = new Attachment();
             newAttachment.setServerChannel(attachment.getServerChannel());
             newAttachment.setClientChannel(client);
+            newAttachment.setPort(attachment.getPort());
             newAttachment.setBuffer(ByteBuffer.allocate(2048));
             newAttachment.setRead(false);
             newAttachment.setClientAddress(clientAddress);
-            testBrokerId = "111222";
-            byteTestBrokerId = testBrokerId.getBytes();
-            newAttachment.getBuffer().put(byteTestBrokerId);
+            routingIdStr = Integer.toString(routingId);
+            ++routingId;
+            newAttachment.setId(routingIdStr);
+            routingTable = RoutingTable.getInstance();
+            routingTable.addEntry(newAttachment);
+            byteRoutingId = newAttachment.getId().getBytes();
+            newAttachment.getBuffer().put(byteRoutingId);
             newAttachment.getBuffer().flip();
-            readWriteHandler = new ReadWriteHandler();
-            System.out.println("Write broker Id: " + testBrokerId);
-            client.write(newAttachment.getBuffer(), newAttachment, readWriteHandler);
+            System.out.println("Assign routingId: " + newAttachment.getId());
+            client.write(newAttachment.getBuffer(), newAttachment, new ReadWriteHandler());
         }
         catch (IOException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
     }
 
     @Override
     public void failed(Throwable exc, Attachment attachment) {
         System.out.println("Failed to accept a connection.");
-        exc.printStackTrace();
     }
 
 }

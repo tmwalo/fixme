@@ -25,7 +25,12 @@ public class ReadWriteHandler implements CompletionHandler<Integer, Attachment> 
 
             request = new Request(attachment, routerRequest);
             requestProcessChain = new RequestProcessChain();
-            requestProcessChain.getProcessChain1().execute(request);
+            try {
+                requestProcessChain.getProcessChain1().execute(request);
+            }
+            catch (Exception e) {
+                System.out.println("Connection to router lost.");
+            }
         }
         else {
             attachment.setRead(true);

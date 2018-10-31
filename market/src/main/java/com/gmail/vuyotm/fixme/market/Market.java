@@ -11,9 +11,9 @@ public class Market {
 
     public static void main(String[] args) {
 
-        AsynchronousSocketChannel clientChannel;
-        Future<Void> result;
-        Attachment attachment;
+        AsynchronousSocketChannel   clientChannel;
+        Future<Void>                result;
+        Attachment                  attachment;
 
         try {
         clientChannel = AsynchronousSocketChannel.open();
@@ -26,7 +26,7 @@ public class Market {
         attachment.setRead(true);
         attachment.setMarketIdSet(false);
         attachment.setMainThread(Thread.currentThread());
-        clientChannel.read(attachment.getBuffer(), attachment, new ReadWriteHandler());
+        clientChannel.read(attachment.getBuffer(), attachment, new ConnectionHandler());
 
         attachment.getMainThread().join();
         }
